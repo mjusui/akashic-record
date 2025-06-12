@@ -9,6 +9,12 @@
       display: flex;
       flex-direction: row;
     }
+    .square {
+      padding: 11px;
+      border-style: solid;
+      border-width: 1px;
+      border-color: rgba(0,0,0.1.0);
+    }
   </style>
   <section id='root' class='column'>
     <img src='/akashic-record-icon.png'
@@ -22,11 +28,13 @@
         </select>
         <input type='text' placeholder='API token'></input>
       </div>
-      <div class='row'>
-        <input type='text' name='start_date' placeholder='20250601'></input>
-        <input type='text' name='end_date' placeholder='20250601'></input>
+      <div class='col square'>
+        <div class='row'>
+          <input type='text' name='start_date' placeholder='20250601'></input>
+          <input type='text' name='end_date' placeholder='20250601'></input>
+        </div>
+        <button data-cmd='click/get-manhours'>Kosu Shutoku</button>
       </div>
-      <button data-cmd='click/get-manhours'>Kosu Shutoku</button>
     </div>
   </section>
   <script src='/side_panel/index.js'></script>
