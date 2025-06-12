@@ -17,6 +17,7 @@
           textarea_staff_result.value=json;
           return;
         }
+console.log(items);
         const staffs=items.map(item =>(
           item.staffs.map(staff =>({
             id: staff.staffId,
