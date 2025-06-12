@@ -1,0 +1,10 @@
+{
+  "name": "AKASHIc Record",
+  "description": "AKASHI Kosu Kanri",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": "akashic-record-icon.png"
+  }
+}
