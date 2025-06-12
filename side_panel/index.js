@@ -49,9 +49,13 @@
       return;
     }
     if(key === 'endpoint'){
-      [...select_endpoint.options,].forEach(option =>{
-        option.value === val && option.selected=true;
-      });
+      for(let i=0; i < select_endpoint.options.length; i++){
+        const option=select_endpoint.options[i];
+        if(option.value === val){
+          option.selected=true;
+          break;
+        }
+      }    
     }
     if(key === 'token'){
       input_token.value=val;
