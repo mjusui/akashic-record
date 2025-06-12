@@ -1,6 +1,7 @@
 (()=>{
   const root=document.getElementById('root');
 
+  const textarea_kosu_result=document.getElementById('textarea-kosu-result');
   const onclick=(ev)=>{
     const { target, }=ev;
     const { cmd, }=target.dataset;
@@ -8,8 +9,9 @@
 
     if(cmd === 'click/get-manhours'){
       console.log('click/get-manhours:', ev);
-      request((err, data)=>{
-
+      request((err, ctxt)=>{
+        const { json, }=ctxt;
+        textarea_kosu_result.value=json;
       }, { pathname: '/manhours', });
       return;
     }
@@ -31,7 +33,6 @@
   const select_endpoint=document.getElementById('select-endpoint');
   const input_token=document.getElementById('input-token');
   const input_coopid=document.getElementById('input-coopid');
-  const textarea_result=document.getElementById('textarea-result');
   const request=(hndl, ctxt)=>{
     if( !input_token.reportValidity() ){
       return;
@@ -51,10 +52,9 @@
 
     fetch(url.href, { method, body, })
       .then(resp => resp.json())
-      .then(data =>{
-      const json=JSON.stringify(data);
-      textarea_result.value=json;
-      hndl(null, data);
+      .then(json =>{
+      const data=JSON.parse(json);
+      hndl(null, { json, data, });
     });
   };
 })();
