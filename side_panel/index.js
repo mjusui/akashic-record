@@ -52,8 +52,8 @@
 
     fetch(url.href, { method, body, })
       .then(resp => resp.json())
-      .then(json =>{
-      const data=JSON.parse(json);
+      .then(data =>{
+      const json=JSON.stringify(data);
       hndl(null, { json, data, });
     });
   };
