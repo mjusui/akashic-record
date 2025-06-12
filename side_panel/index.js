@@ -24,16 +24,12 @@
     const { cmd, }=target.dataset;
     console.log(cmd, ':', ev);
 
-    if(cmd === 'change/save-endpoint'){
-      localStorage.setItem('common/endpoint', target.value);
-      return;
-    }
-    if(cmd === 'change/save-token'){
-      localStorage.setItem('common/token', target.value);
-      return;
-    }
-    if(cmd === 'change/save-coopid'){
-      localStorage.setItem('common/coopid', target.value);
+    if(cmd === 'change/save-value'){
+      const { id, }=target;
+      if(!id){
+        return;
+      }
+      localStorage.setItem(id, target.value);
       return;
     }
   };
@@ -43,27 +39,28 @@
   const input_token=document.getElementById('input-token');
   const input_coopid=document.getElementById('input-coopid');
 
-  ['endpoint', 'token', 'coopid', ].forEach(key =>{
-    const val=localStorage.getItem(`common/${key}`);
-    if(!val){
-      return;
+  for(let i=0; i < localStorage.length; i++){
+    const key=localStorage.key(i);
+    const val=localStorage.getItem(key);
+    const el=document.getElementById(key);
+    if(!el){
+      continue;
     }
-    if(key === 'endpoint'){
-      for(let i=0; i < select_endpoint.options.length; i++){
-        const option=select_endpoint.options[i];
+    if(el.tagName === 'INPUT'){
+      el.value=val;
+      continue;
+    }
+    if(el.tagName === 'SELECT'){
+      for(let j=0; j < el.options.length; j++){
+        const option=el.options[j];
         if(option.value === val){
           option.selected=true;
           break;
         }
-      }    
+      }
+      continue;
     }
-    if(key === 'token'){
-      input_token.value=val;
-    }
-    if(key === 'coopid'){
-      input_coopid.value=val;
-    }
-  });
+  }
 
   const request=(hndl, ctxt)=>{
     if( !input_token.reportValidity() ){

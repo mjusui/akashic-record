@@ -23,24 +23,26 @@
     <div class='col'>
       <div class='col square'>
         <h1>Common Settings</h1>
-        <select id='select-endpoint' name='endpoint' data-cmd='change/save-endpoint'>
+        <select id='select-endpoint' name='endpoint' data-cmd='change/save-value'>
           <option value=''>-</option>
           <option value='https://atnd.ak4.jp'>https://atnd.ak4.jp</option>
           <option value='https://atnd-awj.ak4.jp'>https://atnd-awj.ak4.jp</option>
         </select>
         <div class='row'>
           <input id='input-token' type='text' name='token' placeholder='API token' required
-            data-cmd='change/save-token'></input>
+            data-cmd='change/save-value'></input>
           <input id='input-coopid' type='text' name='coopid' placeholder='Your Cooperation ID' required
-            dat-cmd='change/save-coopid'></input>
+            dat-cmd='change/save-value'></input>
         </div>
       </div>
       <div class='col square'>
         <h1>Kosu Kanri</h1>
         <div class='row'>
-          <input id='input-kosu-start' type='text' name='start' placeholder='20250601'></input>
+          <input id='input-kosu-start' type='text' name='start' placeholder='20250601'
+            data-cmd='change/save-value'></input>
           <div> ~ </div>
-          <input id='input-kosu-end' type='text' name='end' placeholder='20250601'></input>
+          <input id='input-kosu-end' type='text' name='end' placeholder='20250630'
+            data-cmd='change/save-value'></input>
         </div>
         <button data-cmd='click/get-manhours'>Kosu Shutoku</button>
         <textarea id='textarea-kosu-result'></textarea>
