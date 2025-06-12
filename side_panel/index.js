@@ -29,7 +29,7 @@
       if(!id){
         return;
       }
-      localStorage.setItem(id, target.value);
+      localStorage.setItem(`value/${id}`, target.value);
       return;
     }
   };
@@ -42,7 +42,13 @@
   for(let i=0; i < localStorage.length; i++){
     const key=localStorage.key(i);
     const val=localStorage.getItem(key);
+
+    if( !val.startsWith('value/') ){
+      continue;
+    }
+    const id=val.split('/')[1];
     const el=document.getElementById(key);
+
     if(!el){
       continue;
     }
