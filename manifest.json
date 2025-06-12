@@ -3,8 +3,16 @@
   "description": "AKASHI Kosu Kanri",
   "version": "1.0",
   "manifest_version": 3,
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
   "action": {
     "default_popup": "index.html",
     "default_icon": "akashic-record-icon.png"
+  },
+  "options_ui": {
+    "page": "options_ui/index.html",
+    "open_in_tab": false
   }
 }

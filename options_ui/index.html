@@ -1,0 +1,28 @@
+<html>
+<body>
+  <style>
+    .column {
+      display: flex;
+      flex-direction: column;    
+    }
+    .row {
+      display: flex;
+      flex-direction: row;
+    }
+  </style>
+  <section id='root' class='column'>
+    <img src='/akashic-record-icon.png'
+      height='55px' width='55px'></img>
+
+    <div class='col'>
+      <input type='text' placeholder='API token'></input>
+      <div class='row'>
+        <input type='text' name='start_date' placeholder='20250601'></input>
+        <input type='text' name='end_date' placeholder='20250601'></input>
+      </div>
+      <button data-cmd='click/get-manhours'>Kosu Shutoku</button>
+    </div>
+  </section>
+  <script src='/options_ui/index.js'></script>
+</body>
+</html>
