@@ -40,6 +40,7 @@
       return;
     }
     const { method, pathname, body, }=ctxt;
+    const { value: endpoint, }=select_endpoint;
     const { value: token, }=input_token;
     const { value: coopid, }=input_coopid;
     const url=new URL(endpoint);
