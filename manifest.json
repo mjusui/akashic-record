@@ -4,15 +4,13 @@
   "version": "1.0",
   "manifest_version": 3,
   "permissions": [
-    "activeTab",
-    "storage"
+    "sidePanel"
   ],
   "action": {
     "default_popup": "index.html",
     "default_icon": "akashic-record-icon.png"
   },
-  "options_ui": {
-    "page": "options_ui/index.html",
-    "open_in_tab": false
+  "side_panel": {
+    "default_path": "side_panel/index.html"
   }
 }
