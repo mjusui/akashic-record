@@ -7,6 +7,7 @@
 
     if(cmd === 'click/get-manhours'){
       console.log('click/get-manhours:', ev);
+      fetch
       return;
     }
   };
