@@ -8,6 +8,9 @@
 
     if(cmd === 'click/get-manhours'){
       console.log('click/get-manhours:', ev);
+      request((err, data)=>{
+
+      }, { pathname: '/manhours', });
       return;
     }
   };
@@ -27,15 +30,20 @@
 
   const select_endpoint=document.getElementById('select-endpoint');
   const input_token=document.getElementById('input-token');
+  const input_coopid=document.getElementById('input-coopid');
   const textarea_result=document.getElementById('textarea-result');
-  const onrequest=(ctxt)=>{
-    if(!input_token.reportValidity() ){
+  const request=(hndl, ctxt)=>{
+    if( !input_token.reportValidity() ){
       return;
     };
+    if( !input_coopid.reportValidity() ){
+      return;
+    }
     const { method, pathname, body, }=ctxt;
     const { value: token, }=input_token;
+    const { value: coopid, }=input_coopid;
     const url=new URL(endpoint);
-    url.pathname=pathname;
+    url.pathname=`/api/cooperation/${coopid}${pathname}`;
     
     url.setSearchParam('token', token);
 
@@ -44,6 +52,7 @@
       .then(data =>{
       const json=JSON.stringify(data);
       textarea_result.value=json;
+      hndl(null, data);
     });
   };
 })();
