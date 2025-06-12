@@ -17,9 +17,8 @@
           textarea_staff_result.value=json;
           return;
         }
-console.log(items);
-        const staffs=items.map(item =>(
-          item.staffs.map(staff =>({
+        const staffs=items.map( ({ resp, }) =>(
+          resp.staffs.map(staff =>({
             id: staff.staffId,
             name: `${staff.lastName} ${staff.firstName}`,
           }) )
@@ -119,17 +118,17 @@ console.log(items);
       fetch(url.href, { method, body, })
         .then(resp => resp.json())
         .then(data =>{
-        const { success, errors, response, }=data;
+        const { success, errors, response: resp, }=data;
         if(!success){
           const json=JSON.stringify(errors);
           hndl(errors, { json, data, });
           return;
         }
-        const json=JSON.stringify(response);
-        items.push({ json, data, });
+        const json=JSON.stringify(resp);
+        items.push({ json, resp, data, });
 
         if(paging){
-          const { Count: count, }=response;
+          const { Count: count, }=resp;
           if( !(count < 20) ){
             dorequest(page + 1);
             return;
