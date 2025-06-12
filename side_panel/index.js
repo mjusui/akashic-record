@@ -11,9 +11,22 @@
 
     if(cmd === 'click/fetch-staffs'){
       console.log('click/fetch-staffs:', ev);
-      request((errs, ctxt)=>{
-        const { json, }=ctxt;
-        textarea_staff_result.value=json;
+      request((errs, ...items)=>{
+        if(errs){
+          const { json, }=items[0];
+          textarea_staff_result.value=json;
+          return;
+        }
+        const staffs=items.map(item =>(
+          item.staffs.map(staff =>({
+            id: staff.staffId,
+            name: `${staff.lastName} ${staff.firstName}`,
+          }) )
+        ) ).flat(1);
+
+        json_staffs=JSON.stringify(staffs);
+        textarea_staff_result.value=json_staffs;
+        localStorage.setItem('result/textarea-staff-result', json_staffs);
       }, { pathname: '/staffs', paging: true, });
       return;
     }
@@ -51,7 +64,7 @@
   for(let i=0; i < localStorage.length; i++){
     const key=localStorage.key(i);
 
-    if( !key.startsWith('value/') ){
+    if( !(key.startsWith('value/') || key.startsWith('result/') )){
       continue;
     }
     const val=localStorage.getItem(key);
@@ -62,7 +75,8 @@
     if(!el){
       continue;
     }
-    if(el.tagName === 'INPUT'){
+    if(el.tagName === 'INPUT'
+    || el.tagName === 'TEXTAREA'){
       el.value=val;
       continue;
     }
@@ -107,7 +121,7 @@
         const { success, errors, response, }=data;
         if(!success){
           const json=JSON.stringify(errors);
-          hndl(errors, { json, });
+          hndl(errors, { json, data, });
           return;
         }
         const json=JSON.stringify(response);
