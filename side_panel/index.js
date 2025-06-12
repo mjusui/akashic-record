@@ -41,12 +41,13 @@
 
   for(let i=0; i < localStorage.length; i++){
     const key=localStorage.key(i);
-    const val=localStorage.getItem(key);
 
-    if( !val.startsWith('value/') ){
+    if( !key.startsWith('value/') ){
       continue;
     }
-    const id=val.split('/')[1];
+    const val=localStorage.getItem(key);
+
+    const id=key.split('/')[1];
     const el=document.getElementById(id);
 
     if(!el){
