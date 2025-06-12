@@ -47,7 +47,7 @@
       continue;
     }
     const id=val.split('/')[1];
-    const el=document.getElementById(key);
+    const el=document.getElementById(id);
 
     if(!el){
       continue;
