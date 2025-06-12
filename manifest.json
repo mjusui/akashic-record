@@ -6,6 +6,10 @@
   "permissions": [
     "sidePanel"
   ],
+  "host_permissions": [
+    "https://atnd.ak4.jp",
+    "https://atnd-awj.ak4.jp"
+  ],
   "action": {
     "default_popup": "index.html",
     "default_icon": "akashic-record-icon.png"
