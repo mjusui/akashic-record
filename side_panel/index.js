@@ -2,15 +2,24 @@
 
   const root=document.getElementById('root');
 
+  const textarea_staff_result=document.getElementById('textarea-staff-result');
   const textarea_kosu_result=document.getElementById('textarea-kosu-result');
   const onclick=(ev)=>{
     const { target, }=ev;
     const { cmd, }=target.dataset;
     console.log(cmd, ':', ev);
 
+    if(cmd === 'click/fetch-staffs'){
+      console.log('click/fetch-staffs:', ev);
+      request((errs, ctxt)=>{
+        const { json, }=ctxt;
+        textarea_staff_result.value=json;
+      }, { pathname: '/staffs', paging: true, });
+      return;
+    }
     if(cmd === 'click/get-manhours'){
       console.log('click/get-manhours:', ev);
-      request((err, ctxt)=>{
+      request((errs, ctxt)=>{
         const { json, }=ctxt;
         textarea_kosu_result.value=json;
       }, { pathname: '/manhours', });
@@ -76,7 +85,7 @@
     if( !input_coopid.reportValidity() ){
       return;
     }
-    const { method, pathname, body, }=ctxt;
+    const { method, pathname, body, paging, }=ctxt;
     const { value: endpoint, }=select_endpoint;
     const { value: token, }=input_token;
     const { value: coopid, }=input_coopid;
@@ -86,11 +95,33 @@
     const params=url.searchParams;
     params.set('token', token);
 
-    fetch(url.href, { method, body, })
-      .then(resp => resp.json())
-      .then(data =>{
-      const json=JSON.stringify(data);
-      hndl(null, { json, data, });
-    });
+
+    let items=[];
+    const dorequest=(page)=>{
+      if(paging){
+        params.set('page', page);
+      }
+      fetch(url.href, { method, body, })
+        .then(resp => resp.json())
+        .then(data =>{
+        const { success, errors, response, }=data;
+        if(!success){
+          const json=JSON.stringify(errors);
+          hndl(errors, { json, });
+          return;
+        }
+        const json=JSON.stringify(response);
+        items.push({ json, data, });
+
+        if(paging){
+          const { Count: count, }=response;
+          if( !(count < 20) ){
+            dorequest(page + 1);
+            return;
+          }
+        }
+        hndl(null, ...items);
+      });
+    }; dorequest(paging ? 0 : -100);
   };
 })();
