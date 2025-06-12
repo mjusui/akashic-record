@@ -46,7 +46,7 @@
     const url=new URL(endpoint);
     url.pathname=`/api/cooperation/${coopid}${pathname}`;
     
-    const params=url.getSearchParams;
+    const params=url.searchParams;
     params.set('token', token);
 
     fetch(url.href, { method, body, })
