@@ -22,19 +22,21 @@
 
     <div class='col'>
       <div class='row'>
-        <select name='AKASHI URL' data-cmd='change/set-endpoint'>
+        <select id='select-endpoint' name='endpoint' data-cmd='change/set-endpoint'>
           <option value='https://atnd.ak4.jp'>https://atnd.ak4.jp</option>
           <option value='https://atnd-awj.ak4.jp'>https://atnd-awj.ak4.jp</option>
         </select>
-        <input type='text' placeholder='API token'></input>
+        <input id='input-token' type='text' name='token' placeholder='API token' required></input>
       </div>
       <div class='col square'>
         <h1>Kosu Kanri</h1>
         <div class='row'>
-          <input type='text' name='start_date' placeholder='20250601'></input>
-          <input type='text' name='end_date' placeholder='20250601'></input>
+          <input id='input-kosu-start' type='text' name='start' placeholder='20250601'></input>
+          <div>~</div>
+          <input id='input-kosu-end' type='text' name='end' placeholder='20250601'></input>
         </div>
         <button data-cmd='click/get-manhours'>Kosu Shutoku</button>
+        <textarea id='textarea-kosu-result'></textarea>
       </div>
     </div>
   </section>

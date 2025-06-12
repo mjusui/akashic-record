@@ -8,13 +8,11 @@
 
     if(cmd === 'click/get-manhours'){
       console.log('click/get-manhours:', ev);
-      fetch
       return;
     }
   };
   root.addEventListener('click', onclick);
 
-  let endpoint='https://atnd.ak4.jp';
   const onchange=(ev)=>{
     const { target, }=ev;
     const { cmd, }=target.dataset;
@@ -26,4 +24,26 @@
     }
   };
   root.addEventListener('change', onchange);
+
+  const select_endpoint=document.getElementById('select-endpoint');
+  const input_token=document.getElementById('input-token');
+  const textarea_result=document.getElementById('textarea-result');
+  const onrequest=(ctxt)=>{
+    if(!input_token.reportValidity() ){
+      return;
+    };
+    const { method, pathname, body, }=ctxt;
+    const { value: token, }=input_token;
+    const url=new URL(endpoint);
+    url.pathname=pathname;
+    
+    url.setSearchParam('token', token);
+
+    fetch(url.href, { method, body, })
+      .then(resp => resp.json())
+      .then(data =>{
+      const json=JSON.stringify(data);
+      textarea_result.value=json;
+    });
+  };
 })();
