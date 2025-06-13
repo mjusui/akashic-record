@@ -192,6 +192,6 @@
     };
     dorequest({
       page: paging ? 0 : -100,
-      idx: iter ? 0 : -100, );
+      idx: iter ? 0 : -100, });
   };
 })();
