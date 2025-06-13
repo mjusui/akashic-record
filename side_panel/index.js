@@ -164,7 +164,7 @@
           params.set(key, val);
         });
       }
-      fetch(url.href, { method, body, })
+      fetch(url.href)
         .then(resp => resp.json())
         .then(data =>{
         const { success, errors, response: resp, }=data;
