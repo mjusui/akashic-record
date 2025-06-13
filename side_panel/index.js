@@ -41,14 +41,12 @@
           ) ).flat(1);
           const staffs_json=JSON.stringify(staffs);
           result.value=staffs_json;
-          return;
         }
         if(pathname === '/working_records'){
           const { resp: recs, }=items[0];
           const recs_by_staffs=Object.groupBy(recs, rec => rec.staff_id);
           const recs_json=JSON.stringify(recs_by_staffs);
           result.value=recs_json;
-          return;
         }
         if(pathname === '/manhours'){
           const manhours=items.map( ({ resp, })=>(
@@ -57,8 +55,8 @@
           const manhours_by_staffs=Object.groupBy(manhours, mh => mh.staff_id);
           const manhours_json=JSON.stringify(manhours_by_staffs);
           result.value=manhours_json;
-          return;
         }
+        localStorage.setItem(`result/${resultid}`, result.value);
       }, reqopt);
       return;
     }
