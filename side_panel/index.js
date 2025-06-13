@@ -1,5 +1,4 @@
 (()=>{
-
   const root=document.getElementById('root');
 
   const onclick=(ev)=>{
@@ -13,22 +12,18 @@
       const { pathname, }=reqopt;
 
       if(pathname === '/working_records'){
-        const { value: staffs_json, }=document.getElementById('textarea-staff-result');
-        const staffs=JSON.parse(staffs_json);
+        const staffs=util.getResult('textarea-staff-result');
         const staffs_group=Object.groupBy(staffs, (staff, idx)=> Math.floor(idx/50) )
         const staffs_list=Object.values(staffs_group);
         const staff_ids_list=staffs_list.map(staffs => staffs.map(staff => staff.id).join(',') );
         reqopt.iter=staff_ids_list.map(staff_ids =>({ query: { staff_ids, }, }) );
-        console.log(reqopt.iter, staffs_json, staffs, staffs_group, staffs_list, staff_ids_list);
       }
-      if(pathname === '/manhours'){
 
-      }
-      request((errs, ...items)=>{
-        const result=document.getElementById(resultid);
+      util.request((errs, ...items)=>{
 
         if(errs){
           const { json, }=items[0];
+          const result=document.getElementById(resultid);
           result.value=json;
           return;
         }
@@ -39,25 +34,28 @@
               name: `${staff.lastName} ${staff.firstName}`,
             }) )
           ) ).flat(1);
-          const staffs_json=JSON.stringify(staffs);
-          result.value=staffs_json;
+          util.setResult(resultid, staffs);
+          return;
         }
         if(pathname === '/working_records'){
           const { resp: recs, }=items[0];
           const recs_by_staffs=Object.groupBy(recs, rec => rec.staff_id);
-          const recs_json=JSON.stringify(recs_by_staffs);
-          result.value=recs_json;
+          util.setResult(resultid, recs_by_staffs);
+          return;
         }
         if(pathname === '/manhours'){
           const manhours=items.map( ({ resp, })=>(
             resp.manhours
           ) ).flat(1);
           const manhours_by_staffs=Object.groupBy(manhours, mh => mh.staff_id);
-          const manhours_json=JSON.stringify(manhours_by_staffs);
-          result.value=manhours_json;
+          util.setResult(resultid, manhours_by_staffs);
+          return;
         }
-        localStorage.setItem(`result/${resultid}`, result.value);
       }, reqopt);
+      return;
+    }
+    if(cmd === 'click/check-kosu'){
+      const { value: staffs_json=
       return;
     }
   };
@@ -73,7 +71,7 @@
       if(!id){
         return;
       }
-      localStorage.setItem(`value/${id}`, target.value);
+      util.setValue(id, target.value);
       return;
     }
   };
@@ -85,38 +83,41 @@
   const input_start=document.getElementById('input-start');
   const input_end=document.getElementById('input-end');
 
-  for(let i=0; i < localStorage.length; i++){
-    const key=localStorage.key(i);
+  const init=()=>{
+    for(let i=0; i < localStorage.length; i++){
+      const key=localStorage.key(i);
 
-    if( !(key.startsWith('value/') || key.startsWith('result/') )){
-      continue;
-    }
-    const val=localStorage.getItem(key);
-
-    const id=key.split('/')[1];
-    const el=document.getElementById(id);
-
-    if(!el){
-      continue;
-    }
-    if(el.tagName === 'INPUT'
-    || el.tagName === 'TEXTAREA'){
-      el.value=val;
-      continue;
-    }
-    if(el.tagName === 'SELECT'){
-      for(let j=0; j < el.options.length; j++){
-        const option=el.options[j];
-        if(option.value === val){
-          option.selected=true;
-          break;
-        }
+      if( !(key.startsWith('value/') || key.startsWith('result/') )){
+        continue;
       }
-      continue;
-    }
-  }
+      const val=localStorage.getItem(key);
 
-  const request=(hndl, ctxt)=>{
+      const id=key.split('/')[1];
+      const el=document.getElementById(id);
+
+      if(!el){
+        continue;
+      }
+      if(el.tagName === 'INPUT'
+      || el.tagName === 'TEXTAREA'){
+        el.value=val;
+        continue;
+      }
+      if(el.tagName === 'SELECT'){
+        for(let j=0; j < el.options.length; j++){
+          const option=el.options[j];
+          if(option.value === val){
+            option.selected=true;
+            break;
+          }
+        }
+        continue;
+      }
+    }
+  }; init();
+
+  const util={};
+  util.request=(hndl, ctxt)=>{
     if( !input_token.reportValidity() ){
       return;
     };
@@ -193,5 +194,22 @@
     dorequest({
       page: paging ? 0 : -100,
       idx: iter ? 0 : -100, });
+  };
+  util.getValue=(id)=>{
+    const value=localStorage.getItem(`value/${id}`);
+    return value;
+  };
+  util.setValue=(id, value)=>{
+    localStorage.setItem(`value/${id}`, value);
+  };
+  util.getResult=(id)=>{
+    const json=localStorage.getItem(`result/${id}`);
+    return JSON.parse(json);
+  };
+  util.setResult=(id, data)=>{
+    const json=JSON.stringify(data);
+    const el=document.getElementById(id);
+    el.value=json;
+    localStorage.setItem(`result/${id}`, json);
   };
 })();
