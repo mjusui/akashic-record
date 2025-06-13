@@ -61,44 +61,6 @@
       }, reqopt);
       return;
     }
-    return;
-    if(cmd === 'click/fetch-staffs'){
-      console.log('click/fetch-staffs:', ev);
-      request((errs, ...items)=>{
-        if(errs){
-          const { json, }=items[0];
-          textarea_staff_result.value=json;
-          return;
-        }
-        const staffs=items.map( ({ resp, }) =>(
-          resp.staffs.map(staff =>({
-            id: staff.staffId,
-            name: `${staff.lastName} ${staff.firstName}`,
-          }) )
-        ) ).flat(1);
-
-        json_staffs=JSON.stringify(staffs);
-        textarea_staff_result.value=json_staffs;
-        /* textarea_staff_result.value=staffs.map(
-          ({ id, name, })=> `${name}(${id})`
-        ).join('\n'); */
-        localStorage.setItem('result/textarea-staff-result', json_staffs);
-      }, { pathname: '/staffs', paging: true, });
-      return;
-    }
-    if(cmd === 'click/get-manhours'){
-      console.log('click/get-manhours:', ev);
-      request((errs, item)=>{
-        const { errs, json, resp, }=item;
-        textarea_kosu_result.value=json;
-
-        if(errs){
-          return;
-        }
-        const { manhours: , }=resp;
-      }, { pathname: '/manhours', });
-      return;
-    }
   };
   root.addEventListener('click', onclick);
 
