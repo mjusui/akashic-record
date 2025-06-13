@@ -16,7 +16,7 @@
         const { value: staffs_json, }=document.getElementById('textarea-staff-result');
         const staffs=JSON.parse(staffs_json);
         const staff_ids_list=Object.values(
-          staffs_data.groupBy((staff, idx)=> Math.floor(idx/50) )
+          staffs.groupBy((staff, idx)=> Math.floor(idx/50) )
         ).map(staff_ids => staff_ids.join(',') );
         reqopt.iter=staff_ids_list.map(staff_ids =>({ query: { staff_ids, }, }) );
       }
