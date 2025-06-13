@@ -16,7 +16,7 @@
         const { value: staffs_json, }=document.getElementById('textarea-staff-result');
         const staffs=JSON.parse(staffs_json);
         const staff_ids_list=Object.values(
-          staffs.groupBy((staff, idx)=> Math.floor(idx/50) )
+          Object.groupBy(staffs, (staff, idx)=> Math.floor(idx/50) )
         ).map(staff_ids => staff_ids.join(',') );
         reqopt.iter=staff_ids_list.map(staff_ids =>({ query: { staff_ids, }, }) );
       }
@@ -44,7 +44,7 @@
         }
         if(pathname === '/working_records'){
           const { resp: recs, }=items[0];
-          const recs_by_staffs=recs.groupBy(rec => rec.staff_id);
+          const recs_by_staffs=Object.groupBy(recs, rec => rec.staff_id);
           const recs_json=JSON.stringify(recs_by_staffs);
           result.value=recs_json;
           return;
