@@ -19,7 +19,7 @@
           Object.groupBy(staffs, (staff, idx)=> Math.floor(idx/50) )
         ).map(staff_ids => staff_ids.join(',') );
         reqopt.iter=staff_ids_list.map(staff_ids =>({ query: { staff_ids, }, }) );
-        console.log(iter);
+        console.log(reqopt.iter);
       }
       if(pathname === '/manhours'){
 
@@ -165,6 +165,7 @@
           params.set(key, val);
         });
       }
+      console.log('fetch:', url);
       fetch(url.href)
         .then(resp => resp.json())
         .then(data =>{
