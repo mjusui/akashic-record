@@ -54,7 +54,7 @@
           const manhours=items.map( ({ resp, })=>(
             resp.manhours
           ) ).flat(1);
-          const manhours_by_staffs=manhours.groupBy(mh => mh.staff_id);
+          const manhours_by_staffs=Object.groupBy(manhours, mh => mh.staff_id);
           const manhours_json=JSON.stringify(manhours_by_staffs);
           result.value=manhours_json;
           return;
