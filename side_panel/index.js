@@ -15,10 +15,9 @@
       if(pathname === '/working_records'){
         const { value: staffs_json, }=document.getElementById('textarea-staff-result');
         const staffs=JSON.parse(staffs_json);
-        const staff_ids_group=Object.groupBy(staffs, (staff, idx)=> Math.floor(idx/50) )
-        const staff_ids_list=Object.values(
-          staff_ids_group
-        ).map(staff_ids => staff_ids.join(',') );
+        const staffs_group=Object.groupBy(staffs, (staff, idx)=> Math.floor(idx/50) )
+        const staffs_list=Object.values(staffs_group);
+        const staff_ids_list=staffs_list.map(staffs => staffs.map(staff => staff.id).join(',') );
         reqopt.iter=staff_ids_list.map(staff_ids =>({ query: { staff_ids, }, }) );
         console.log(reqopt.iter, staffs_json, staffs, staff_ids_group, staff_ids_list);
       }
