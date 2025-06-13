@@ -36,7 +36,7 @@
             resp.staffs.map(staff =>({
               id: staff.staffId,
               name: `${staff.lastName} ${staff.firstName}`,
-            })
+            }) )
           ) ).flat(1);
           const staffs_json=JSON.stringify(staffs);
           result.value=staffs_json;
