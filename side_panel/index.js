@@ -55,7 +55,6 @@
       return;
     }
     if(cmd === 'click/check-kosu'){
-      const { value: staffs_json=
       return;
     }
   };
