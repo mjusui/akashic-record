@@ -55,6 +55,14 @@
       return;
     }
     if(cmd === 'click/check-kosu'){
+      const staffs=util.getResult('textarea-staff-result');
+      const records=util.getResult('textarea-kintai-result');
+      const manhours=util.getResult('textarea-kosu-result');
+
+       staffs.map(staff =>{
+         const record=records[staff.id];
+         const manhour=manhours[staff.id];
+       });
       return;
     }
   };
