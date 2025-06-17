@@ -39,7 +39,12 @@
         }
         if(pathname === '/working_records'){
           const { resp: recs, }=items[0];
-          const recs_by_staffs=Object.groupBy(recs, rec => rec.staff_id);
+          const recs_by_staffs={};
+          recs.forEach(rec =>{
+            const { staff_id, working_records, }=rec;
+            recs_by_staffs[staff_id]=working_records;
+          });
+          //const recs_by_staffs=Object.groupBy(recs, rec => rec.staff_id);
           util.setResult(resultid, recs_by_staffs);
           return;
         }
@@ -47,7 +52,12 @@
           const manhours=items.map( ({ resp, })=>(
             resp.manhours
           ) ).flat(1);
-          const manhours_by_staffs=Object.groupBy(manhours, mh => mh.staff_id);
+          const manhours_by_staffs={};
+          manhours.forEach(manhour =>{
+            const { staff_id, dates, }=manhour;
+            manhours[staff_id]=dates;
+          });
+          //const manhours_by_staffs=Object.groupBy(manhours, mh => mh.staff_id);
           util.setResult(resultid, manhours_by_staffs);
           return;
         }
