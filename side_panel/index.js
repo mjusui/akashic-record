@@ -69,7 +69,7 @@
           records.length, manhours.length, ]).join(',');
       }).join('\n');
 
-      util.setResult(resultid, csv);
+      util.setResult(resultid, csv, true);
       return;
     }
   };
@@ -220,8 +220,8 @@
     const json=localStorage.getItem(`result/${id}`);
     return JSON.parse(json);
   };
-  util.setResult=(id, data)=>{
-    const json=JSON.stringify(data);
+  util.setResult=(id, data, raw=false)=>{
+    const json=raw ? JSON.stringify(data) : data;
     const el=document.getElementById(id);
     el.value=json;
     localStorage.setItem(`result/${id}`, json);
