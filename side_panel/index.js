@@ -55,6 +55,7 @@
       return;
     }
     if(cmd === 'click/check-kosu'){
+      const { resultid, }=target.dataset
       const staffs=util.getResult('textarea-staff-result');
       const records_list=util.getResult('textarea-kintai-result');
       const manhours_list=util.getResult('textarea-kosu-result');
@@ -65,10 +66,10 @@
         const manhours=manhours_list[staff.id] || [];
 
         return ([ staff.id, staff.name,
-          records.length, monhours.length, ]).join(',');
+          records.length, manhours.length, ]).join(',');
       }).join('\n');
 
-      util.setResult('textarea-kosu-ckech-result', csv);
+      util.setResult(resultid, csv);
       return;
     }
   };
