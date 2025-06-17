@@ -60,14 +60,14 @@
       const records_list=util.getResult('textarea-kintai-result');
       const manhours_list=util.getResult('textarea-kosu-result');
 
-      let csv='id,name,kintai,kosu\n';
-      csv+=staffs.map(staff =>{
+      let csv=([ 'id,name,kintai,kosu',
+        ...staffs.map(staff =>{
         const records=records_list[staff.id] || [];
         const manhours=manhours_list[staff.id] || [];
 
         return ([ staff.id, staff.name,
           records.length, manhours.length, ]).join(',');
-      }).join('\n');
+      }), ]).join('\n');
 
       util.setResult(resultid, csv, true);
       return;
