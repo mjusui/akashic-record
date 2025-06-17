@@ -42,7 +42,10 @@
           const recs_by_staffs={};
           recs.forEach(rec =>{
             const { staff_id, working_records, }=rec;
-            recs_by_staffs[staff_id]=working_records;
+            const valid_working_records=working_records.filter(
+              wr => wr.start_time && wr.end_time
+            );
+            recs_by_staffs[staff_id]=valid_working_records;
           });
           //const recs_by_staffs=Object.groupBy(recs, rec => rec.staff_id);
           util.setResult(resultid, recs_by_staffs);
