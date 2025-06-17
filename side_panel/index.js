@@ -55,7 +55,7 @@
           const manhours_by_staffs={};
           manhours.forEach(manhour =>{
             const { staff_id, dates, }=manhour;
-            manhours[staff_id]=dates;
+            manhours_by_staffs[staff_id]=dates;
           });
           //const manhours_by_staffs=Object.groupBy(manhours, mh => mh.staff_id);
           util.setResult(resultid, manhours_by_staffs);
