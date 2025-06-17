@@ -1,1 +1,6 @@
-import './background/open-side-panel.js';
+
+chrome.action.onClicked.addListener((tab)=>{
+  chrome.sidePanel.open({ windowId: tab.windowId, });
+});
+
+
