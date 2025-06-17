@@ -56,13 +56,19 @@
     }
     if(cmd === 'click/check-kosu'){
       const staffs=util.getResult('textarea-staff-result');
-      const records=util.getResult('textarea-kintai-result');
-      const manhours=util.getResult('textarea-kosu-result');
+      const records_list=util.getResult('textarea-kintai-result');
+      const manhours_list=util.getResult('textarea-kosu-result');
 
-       staffs.map(staff =>{
-         const record=records[staff.id];
-         const manhour=manhours[staff.id];
-       });
+      let csv='id,name,kintai,kosu\n';
+      csv+=staffs.map(staff =>{
+        const records=records_list[staff.id] || [];
+        const manhours=manhours_list[staff.id] || [];
+
+        return ([ staff.id, staff.name,
+          records.length, monhours.length, ]).join(',');
+      }).join('\n');
+
+      util.setResult('textarea-kosu-ckech-result', csv);
       return;
     }
   };
