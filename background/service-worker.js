@@ -1,1 +1,1 @@
-import './open-side-panel.js';
+import './background/open-side-panel.js';
