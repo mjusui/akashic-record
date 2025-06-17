@@ -221,7 +221,7 @@
     return JSON.parse(json);
   };
   util.setResult=(id, data, raw=false)=>{
-    const json=raw ? JSON.stringify(data) : data;
+    const json=raw ? data : JSON.stringify(data);
     const el=document.getElementById(id);
     el.value=json;
     localStorage.setItem(`result/${id}`, json);
