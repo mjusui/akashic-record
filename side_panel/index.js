@@ -83,7 +83,7 @@
       const records_list=util.getResult('textarea-kintai-result');
       const manhours_list=util.getResult('textarea-kosu-result');
 
-      const csv=([ 'id,name,kintai,kosu,kintai_error,kosu_error',
+      const csv=([ 'id,name,kintai,kintai_error,kosu,kosu_error',
         ...staffs.map(staff =>{
         const records=records_list[staff.id] || [];
         const manhours=manhours_list[staff.id] || [];
@@ -91,6 +91,7 @@
         let count_no_manhour=0;
         const error_records=records.filter(r =>{
           if(!r.valid){
+            count_no_manhour+=1;
             return true;
           }
           const date=r.date.replace(/\//g, '-');
@@ -110,8 +111,8 @@
         });
 
         return ([ staff.id, staff.name,
-          records.length, manhours.length,
-          error_records.length, error_manhours.length + count_no_manhour, ]).join(',');
+          records.length, errror_records.length,
+          manhours.length, error_manhours.length + count_no_manhour, ]).join(',');
       }), ]).join('\n');
 
       util.setResult(resultid, csv, true);
