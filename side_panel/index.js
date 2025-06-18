@@ -79,6 +79,7 @@
         const records=records_list[staff.id] || [];
         const manhours=manhours_list[staff.id] || [];
 
+        let count_no_mahhour=0;
         const error_records=records.filter(r =>{
           if(!r.valid){
             return true;
@@ -86,9 +87,10 @@
           const date=r.date.replace(/\//g, '-');
           const mh=manhours.find(mh => mh.date === date);
           if(!mh){
-            return true;
+            count_no_manhours+=1;
+            return false;
           }
-          const tasks=mh.projects.map(p => p.daily_hour_items).flat(1);
+          // const tasks=mh.projects.map(p => p.daily_hour_items).flat(1);
         });
         const error_manhours=manhours.filter(mh =>{
           const date=mh.date.replace(/-/g, '/');
@@ -100,7 +102,7 @@
 
         return ([ staff.id, staff.name,
           records.length, manhours.length,
-          error_records.length, error_manhours.length, ]).join(',');
+          error_records.length, error_manhours.length + count_no_manhour, ]).join(',');
       }), ]).join('\n');
 
       util.setResult(resultid, csv, true);
