@@ -79,7 +79,7 @@
         const records=records_list[staff.id] || [];
         const manhours=manhours_list[staff.id] || [];
 
-        let count_no_mahhour=0;
+        let count_no_manhour=0;
         const error_records=records.filter(r =>{
           if(!r.valid){
             return true;
