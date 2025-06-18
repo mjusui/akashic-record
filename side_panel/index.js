@@ -128,7 +128,6 @@
             p => p.daily_hour_items
           ).flat(1).reduce((tot,task)=>(tot + task.minute), 0);
 
-          console.log('date,rmin,mhmin:', date, rmin, mhmin);
           return !(rmin === mhmin)
           /* const { start_time, end_time, }=r;
           const start_utime=new Date(start_time).getTime();
