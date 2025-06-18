@@ -121,6 +121,13 @@
             // already count in error_records
             return false;
           }
+          const { actual_working_hours_no_rounding: rmin, }=r;
+          const mhmin=mh.projects.map(
+            p => p.daily_hour_items
+          ).flat(1).reduce((a,b)=>(a + b) );
+          console.log('rmin,mhmin:', rmin, mhmin);
+
+          return !(rmin === mhmin)
           /* const { start_time, end_time, }=r;
           const start_utime=new Date(start_time).getTime();
           const end_utime=new Date(end_time).getTime(); */
