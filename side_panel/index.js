@@ -126,7 +126,7 @@ console.log('mhdate:', date);
           }
           const mhmin=mh.projects.map(
             p => p.daily_hour_items
-          ).flat(1).reduce((a,b)=>(a + b) );
+          ).flat(1).reduce((a,b)=>(a.minute + b.minute) );
 
           console.log('rmin,mhmin:', rmin, mhmin);
 
