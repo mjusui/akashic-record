@@ -11,6 +11,8 @@
       const reqopt=JSON.parse(reqjson);
       const { pathname, }=reqopt;
 
+      util.clearResult(resultid);
+
       if(pathname === '/working_records'){
         const staffs=util.getResult('textarea-staff-result');
         const staffs_group=Object.groupBy(staffs, (staff, idx)=> Math.floor(idx/50) )
@@ -271,5 +273,9 @@
     const el=document.getElementById(id);
     el.value=json;
     localStorage.setItem(`result/${id}`, json);
+  };
+  util.clearResult=(id)=>{
+    const el=document.getElementById(id);
+    el.value='';
   };
 })();
