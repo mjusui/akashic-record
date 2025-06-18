@@ -111,6 +111,7 @@
           }
           // const tasks=mh.projects.map(p => p.daily_hour_items).flat(1);
         });
+console.log(manhours);
         const error_manhours=manhours.filter(mh =>{
           const date=mh.date.replace(/-/g, '/');
 console.log('mhdate:', date);
