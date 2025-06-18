@@ -18,7 +18,11 @@
         const staffs_group=Object.groupBy(staffs, (staff, idx)=> Math.floor(idx/50) )
         const staffs_list=Object.values(staffs_group);
         const staff_ids_list=staffs_list.map(staffs => staffs.map(staff => staff.id).join(',') );
-        reqopt.iter=staff_ids_list.map(staff_ids =>({ query: { staff_ids, }, }) );
+        reqopt.iter=staff_ids_list.map(
+          staff_ids =>({ query: { staff_ids, },
+            include_break_results: 1,
+            include_actual_working_hours_no_rounding: 1, })
+        );
       }
 
       util.request((errs, ...items)=>{
@@ -113,6 +117,14 @@
           if(!r){
             return true;
           }
+          if(!r.valid){
+            // already count in error_records
+            return false;
+          }
+          /* const { start_time, end_time, }=r;
+          const start_utime=new Date(start_time).getTime();
+          const end_utime=new Date(end_time).getTime(); */
+          
         });
 
         return ([ staff.id, staff.name,
