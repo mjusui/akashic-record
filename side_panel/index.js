@@ -19,9 +19,9 @@
         const staffs_list=Object.values(staffs_group);
         const staff_ids_list=staffs_list.map(staffs => staffs.map(staff => staff.id).join(',') );
         reqopt.iter=staff_ids_list.map(
-          staff_ids =>({ query: { staff_ids, },
+          staff_ids =>({ query: { staff_ids,
             include_break_results: 1,
-            include_actual_working_hours_no_rounding: 1, })
+            include_actual_working_hours_no_rounding: 1, }, })
         );
       }
 
