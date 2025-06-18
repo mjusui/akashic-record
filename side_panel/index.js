@@ -111,10 +111,8 @@
           }
           // const tasks=mh.projects.map(p => p.daily_hour_items).flat(1);
         });
-console.log(manhours);
         const error_manhours=manhours.filter(mh =>{
           const date=mh.date.replace(/-/g, '/');
-console.log('mhdate:', date);
           const r=records.find(r => r.date === date);
           if(!r){
             return true;
@@ -128,8 +126,7 @@ console.log('mhdate:', date);
             p => p.daily_hour_items
           ).flat(1).reduce((a,b)=>(a.minute + b.minute) );
 
-          console.log('rmin,mhmin:', rmin, mhmin);
-
+          console.log('date,rmin,mhmin:', date, rmin, mhmin);
           return !(rmin === mhmin)
           /* const { start_time, end_time, }=r;
           const start_utime=new Date(start_time).getTime();
