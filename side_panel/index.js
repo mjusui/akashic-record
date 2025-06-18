@@ -42,11 +42,20 @@
           const recs_by_staffs={};
           recs.forEach(rec =>{
             const { staff_id, working_records, }=rec;
-            const valid_working_records=working_records.filter(wr =>{
-              wr.valid=(wr.start_time && wr.end_time);
-              return (wr.start_time || wr.end_time);
+
+            const expected_working_records=working_records.filter(wr =>{
+              const { working_day_category,
+                start_time, end_time, }=wr;
+
+              if(0 < working_day_category){
+                if(start_time === null && end_time === null){
+                  return false;
+                }
+              }
+              wr.valid=(start_time && end_time && true);
+              return true;
             });
-            recs_by_staffs[staff_id]=valid_working_records;
+            recs_by_staffs[staff_id]=expected_working_records;
           });
           //const recs_by_staffs=Object.groupBy(recs, rec => rec.staff_id);
           util.setResult(resultid, recs_by_staffs);
