@@ -42,9 +42,10 @@
           const recs_by_staffs={};
           recs.forEach(rec =>{
             const { staff_id, working_records, }=rec;
-            const valid_working_records=working_records.filter(
-              wr => wr.start_time && wr.end_time
-            );
+            const valid_working_records=working_records.filter(wr =>{
+              wr.valid=(wr.start_time && wr.end_time);
+              return (wr.start_time || wr.end_time);
+            });
             recs_by_staffs[staff_id]=valid_working_records;
           });
           //const recs_by_staffs=Object.groupBy(recs, rec => rec.staff_id);
@@ -73,13 +74,33 @@
       const records_list=util.getResult('textarea-kintai-result');
       const manhours_list=util.getResult('textarea-kosu-result');
 
-      let csv=([ 'id,name,kintai,kosu',
+      const csv=([ 'id,name,kintai,kosu,kintai_error,kosu_error',
         ...staffs.map(staff =>{
         const records=records_list[staff.id] || [];
         const manhours=manhours_list[staff.id] || [];
 
+        const error_records=records.filter(r =>{
+          if(!r.valid){
+            return true;
+          }
+          const date=r.date.replace(/\//g, '-');
+          const mh=manhours.find(mh => mh.date === date);
+          if(!mh){
+            return true;
+          }
+          const tasks=mh.projects.map(p => p.daily_hour_items).flat(1);
+        });
+        const error_manhours=manhours.filter(mh =>{
+          const date=mh.date.replace(/-/g, '/');
+          const r=records.find(r => r.date === date);
+          if(!r){
+            return true;
+          }
+        });
+
         return ([ staff.id, staff.name,
-          records.length, manhours.length, ]).join(',');
+          records.length, manhours.length,
+          error_records.length, error_manhours.length, ]).join(',');
       }), ]).join('\n');
 
       util.setResult(resultid, csv, true);
