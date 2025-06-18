@@ -111,7 +111,7 @@
         });
 
         return ([ staff.id, staff.name,
-          records.length, errror_records.length,
+          records.length, error_records.length,
           manhours.length, error_manhours.length + count_no_manhour, ]).join(',');
       }), ]).join('\n');
 
