@@ -96,7 +96,7 @@
           const date=r.date.replace(/\//g, '-');
           const mh=manhours.find(mh => mh.date === date);
           if(!mh){
-            count_no_manhours+=1;
+            count_no_manhour+=1;
             return false;
           }
           // const tasks=mh.projects.map(p => p.daily_hour_items).flat(1);
