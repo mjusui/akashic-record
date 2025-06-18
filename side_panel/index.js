@@ -89,6 +89,8 @@
       const records_list=util.getResult('textarea-kintai-result');
       const manhours_list=util.getResult('textarea-kosu-result');
 
+      util.clearResult(resultid);
+
       const csv=([ 'id,name,kintai,kintai_error,kosu,kosu_error',
         ...staffs.map(staff =>{
         const records=records_list[staff.id] || [];
