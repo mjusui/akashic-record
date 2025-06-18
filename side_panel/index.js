@@ -85,12 +85,12 @@
       const records_list=util.getResult('textarea-kintai-result');
       const manhours_list=util.getResult('textarea-kosu-result');
 
-      const csv=([ 'id,name,kintai,kintai_kyujitsu,kintai_error,kosu,kosu_error',
+      const csv=([ 'id,name,kintai,kintai_error,kosu,kosu_error',
         ...staffs.map(staff =>{
         const records=records_list[staff.id] || [];
-        const records_holiday=records.filter(
+        /* const records_holiday=records.filter(
           r => 0 < r.working_day_category
-        );
+        ); */
         const manhours=manhours_list[staff.id] || [];
 
         let count_no_manhour=0;
@@ -116,7 +116,7 @@
         });
 
         return ([ staff.id, staff.name,
-          records.length, records_holiday.length, error_records.length,
+          records.length, /* records_holiday.length, */ error_records.length,
           manhours.length, error_manhours.length + count_no_manhour, ]).join(',');
       }), ]).join('\n');
 
