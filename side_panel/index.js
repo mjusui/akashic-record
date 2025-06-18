@@ -113,18 +113,20 @@
         });
         const error_manhours=manhours.filter(mh =>{
           const date=mh.date.replace(/-/g, '/');
+console.log('mhdate:', date);
           const r=records.find(r => r.date === date);
           if(!r){
             return true;
           }
-          if(!r.valid){
+          const { valid, actual_working_hours_no_rounding: rmin, }=r;
+          if(!valid){
             // already count in error_records
             return false;
           }
-          const { actual_working_hours_no_rounding: rmin, }=r;
           const mhmin=mh.projects.map(
             p => p.daily_hour_items
           ).flat(1).reduce((a,b)=>(a + b) );
+
           console.log('rmin,mhmin:', rmin, mhmin);
 
           return !(rmin === mhmin)
