@@ -1,7 +1,7 @@
 {
   "name": "AKASHIc Record",
   "description": "AKASHIのAPIを使って、従業員ごとの労働日、工数入力、それぞれの入力間違い(未入力含む)の数をCSVで出力します。",
-  "version": "1.0",
+  "version": "0.9",
   "manifest_version": 3,
   "permissions": [
     "sidePanel"
