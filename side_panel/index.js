@@ -254,7 +254,7 @@
       const records_list=util.getResult('textarea-kintai-result2');
       const manhours_list=util.getResult('textarea-kosu-result2');
 
-      const csv=([ 'id,name,kintai,kintai_error,kosu,kosu_error',
+      const csv=([ 'ID,氏名,労働日,労働日エラー,工数入力,工数入力エラー',
         ...staffs.map(staff =>{
         const records=records_list[staff.id] || [];
         const manhours=manhours_list[staff.id] || [];
