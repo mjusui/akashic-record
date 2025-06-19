@@ -166,7 +166,7 @@
         }
         const staffs=items.map( ({ resp, })=>(
           resp.staffs.map(staff =>({
-            id: starff.staffId,
+            id: staff.staffId,
             name: `${staff.lastName} ${staff.firstName}`,
           }) )
         ) ).falt(1);
