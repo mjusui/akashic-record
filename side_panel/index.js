@@ -143,7 +143,9 @@
       return;
     }
     if(cmd === 'click/fetch-and-check-kosu'){
-      const { args, }=target.dataset;
+      const { resultid, args, }=target.dataset;
+      util.clearResult(resultid);
+
       const steps=args.split(',');
       fetchAndCheckKosu(ev, ...steps);
       return;
