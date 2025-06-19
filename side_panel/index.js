@@ -169,7 +169,7 @@
             id: staff.staffId,
             name: `${staff.lastName} ${staff.firstName}`,
           }) )
-        ) ).falt(1);
+        ) ).flat(1);
         util.setResult(resultid, staffs);
 
         fetchAndCheckKosu(ev, ...steps);
