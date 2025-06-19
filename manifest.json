@@ -11,7 +11,7 @@
     "https://atnd-awj.ak4.jp/"
   ],
   "action": {
-    "default_icon": "action/akashic-record-icon.png"
+    "default_icon": "action/akashic-record-icon-small.png"
   },
   "background": {
     "service_worker": "background/service-worker.js"
