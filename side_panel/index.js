@@ -90,7 +90,7 @@
 
       util.clearResult(resultid);
 
-      const csv=([ 'id,name,kintai,kintai_error,kosu,kosu_error',
+      const csv=([ 'ID,氏名,労働日,労働日エラー,工数入力,工数入力エラー',
         ...staffs.map(staff =>{
         const records=records_list[staff.id] || [];
         /* const records_holiday=records.filter(

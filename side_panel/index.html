@@ -30,7 +30,7 @@
 
     <div class='col'>
       <div class='col square padding'>
-        <h1>AKASHI Settings</h1>
+        <h1>AKASHI設定</h1>
         <select id='select-endpoint' name='endpoint' data-cmd='change/save-value'>
           <option value=''>-</option>
           <option value='https://atnd.ak4.jp'>https://atnd.ak4.jp</option>
@@ -43,10 +43,10 @@
             data-cmd='change/save-value'></input>
         </div>
         <div class='row'>
-          <input id='input-start' type='text' name='start' placeholder='20250601'
+          <input id='input-start' type='text' name='start date' placeholder='20250601'
             data-cmd='change/save-value'></input>
           <div> ~ </div>
-          <input id='input-end' type='text' name='end' placeholder='20250630'
+          <input id='input-end' type='text' name='end date' placeholder='20250630'
             data-cmd='change/save-value'></input>
         </div>
       </div>
@@ -79,17 +79,17 @@
       </div> -->
 
       <div class='col square padding'>
-        <h1>Kintai & Kosu Kakunin</h1>
+        <h1>勤怠と工数を取得</h1>
         <div><details>
-          <summary>Get Staffs - details</summary>
+          <summary>従業員データ - 詳細</summary>
           <textarea id='textarea-staff-result2'></textarea>
         </details></div>
         <div><details>
-          <summary>Get Kntai - details</summary>
+          <summary>労働日データ - 詳細</summary>
           <textarea id='textarea-kintai-result2'></textarea>
         </details></div>
         <div><details>
-          <summary>Get Kosu - details</summary>
+          <summary>工数データ - 詳細</summary>
           <textarea id='textarea-kosu-result2'></textarea>
         </details></div>
 
@@ -98,7 +98,7 @@
         <div class='col'>
           <button data-cmd='click/fetch-and-check-kosu'
             data-args='staff,kintai,kosu,kosu-kakunin'
-            data-resultid='textarea-kosu-kakunin-result2'>Kakunin</button>
+            data-resultid='textarea-kosu-kakunin-result2'>CSV作成</button>
           <textarea id='textarea-kosu-kakunin-result2'></textarea>
         </div>
       </div>
