@@ -273,7 +273,7 @@
             return false;
           }
         });
-        const error_manhours=manours.filter(mh =>{
+        const error_manhours=manhours.filter(mh =>{
           const date=mh.date.replace(/-/g, '/');
           const r=records.find(r => r.date === date);
 
