@@ -42,7 +42,7 @@
             data-cmd='change/save-value'></input>
         </div>
       </div>
-      <div class='col square'>
+      <!-- <div class='col square'>
         <h1>Staffs</h1>
         <button data-cmd='click/fetch-result'
            data-args='{"pathname":"/staffs","paging":true}'
@@ -68,6 +68,26 @@
         <button data-cmd='click/check-kosu'
           data-resultid='textarea-kosu-check-result'>Check Kosu</button>
         <textarea id='textarea-kosu-check-result'></textarea>
+      </div> -->
+
+      <div class='col'>
+        <div><details>
+          <summary>Get Staffs - details</summary>
+          <div class='square' id='div-staff-result'></div>
+        </details></div>
+        <div><details>
+          <summary>Get Kntai - details</summary>
+          <div class='square' id='div-kintai-result'></div>
+        </details></div>
+        <div><details>
+          <summary>Get Kosu - details</summary>
+          <div class='square' id='div-kosu-result'></div>
+        </details></div>
+        <div class='col'>
+          <button data-cmd='click/fetch-and-check-kosu'
+            data-args='staffs,kintai,kosu,kosu-kakunin'>Kosu Kakunin</button>
+          <div class='square' id='div-kosu-kakunin-result'></div>
+        </div>
       </div>
     </div>
   </section>
