@@ -180,7 +180,7 @@
       const pathname='/working_records';
       const date=true;
 
-      const staffs=util.getResult('textarea-staff-result);
+      const staffs=util.getResult('textarea-staff-result');
       const staff_ids_group=Object.groupBy(
         staffs.map(s => s.id), (id, idx)=> Math.floor(idx/50)
       );
