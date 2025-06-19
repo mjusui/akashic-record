@@ -29,8 +29,7 @@
 
         if(errs){
           const { json, }=items[0];
-          const result=document.getElementById(resultid);
-          result.value=json;
+          util.showResult(resultid, json, true);
           return;
         }
         if(pathname === '/staffs'){
@@ -143,8 +142,95 @@
       util.setResult(resultid, csv, true);
       return;
     }
+    if(cmd === 'click/fetch-and-check-kosu'){
+      const { args, }=target.dataset;
+      const steps=args.split(',');
+      fetchAndCheckKosu(ev, ...steps);
+      return;
+    }
   };
   root.addEventListener('click', onclick);
+
+  const fetchAndCheckKosu=(ev, step, ...steps)=>{
+    const resultid=`textarea-${step}-result2`;
+    util.clearResult(resultid);
+
+    if(step === 'staff'){
+      const pathname='/staffs';
+      const paging=true;
+      util.request((errs, ...items)=>{
+        if(errs){
+          const { json, }=items[0];
+          util.showResult(resultid, json, true);
+          return;
+        }
+        const staffs=items.map( ({ resp, })=>(
+          resp.staffs.map(staff =>({
+            id: starff.staffId,
+            name: `${staff.lastName} ${staff.firstName}`,
+          }) )
+        ) ).falt(1);
+        util.setResult(resultid, staffs);
+
+        fetchAndCheckKosu(ev, ...steps);
+      }, { pathname, paging, });
+      return;
+    }
+    if(step === 'kintai'){
+      const pathname='/working_records';
+      const date=true;
+
+      const staffs=util.getResult('textarea-staff-result);
+      const staff_ids_group=Object.groupBy(
+        staffs.map(s => s.id), (id, idx)=> Math.floor(idx/50)
+      );
+      const staff_ids_list=Object.values(staff_ids_group).map(
+        ids => ids.join(',')
+      );
+      const iter=staff_ids_list.map(
+        staff_ids => ({ query: { staff_ids,
+          include_break_results: 1,
+          include_actual_working_hours_no_rounding: 1, },
+        })
+      );
+      util.request((errs, ...items)=>{
+        if(errs){
+          const { json, }=item[0];
+          util.showResult(resultid, json, true);
+          return;
+        }
+        const recs=items.map(i => i.resp).flat(1);
+        const recs_by_staffs={};
+        recs.forEach(rec =>{
+          const{ staff_id, working_records, }=rec;
+
+          const expected_working_records=working_records.filter(wr =>{
+            const { working_day_category,
+              start_time, end_time, }=wr;
+
+            if(0 < working_day_category){
+              if(start_time === null && end_time === null){
+                return false;
+              }
+            }
+            wr.valid=!!(start_time && end_time);
+            return true;
+          });
+          recs_by_staffs[staff_id]=expected_working_records;
+        });
+        util.setResult(resultid, recs_by_staffs);
+
+        fetchAndCheckKosu(ev, ...steps);
+      }, { pathname, date, iter, });
+      return;
+    }
+    if(step === 'kosu'){
+
+    }
+    if(step === 'kosu-kakunin'){
+
+    }
+  };
 
   const onchange=(ev)=>{
     const { target, }=ev;
@@ -297,6 +383,11 @@
     el.value=json;
     localStorage.setItem(`result/${id}`, json);
   };
+  util.showResult=(id, data, raw=false)=>{
+    const json=raw ? data : JSON.stringify(data);
+    const el=document.getElementById(id);
+    el.value=json;
+  }
   util.clearResult=(id)=>{
     const el=document.getElementById(id);
     el.value='';
