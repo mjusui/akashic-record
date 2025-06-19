@@ -180,7 +180,7 @@
       const pathname='/working_records';
       const date=true;
 
-      const staffs=util.getResult('textarea-staff-result');
+      const staffs=util.getResult('textarea-staff-result2');
       const staff_ids_group=Object.groupBy(
         staffs.map(s => s.id), (id, idx)=> Math.floor(idx/50)
       );
@@ -248,7 +248,58 @@
       return;
     }
     if(step === 'kosu-kakunin'){
+      const staffs=util.getResult('textarea-staff-result2');
+      const records_list=util.getResult('textarea-kintai-result2');
+      const manhours_list=util.getResult('textarea-kosu-result2');
 
+      const csv=([ 'id,name,kintai,kintai_error,kosu,kosu_error',
+        ...staffs.map(staff =>{
+        const records=records_list[staff.id] || [];
+        const manhours=manhours_list[staff.id] || [];
+
+        let count_no_manhour=0;
+        const error_records=records.filter(r =>{
+          const { valid, }=r;
+
+          if(!valid){
+            count_no_manhour+=1;
+            return true; 
+          }
+          const date=r.date.replace(/\//g, '-');
+          const mh=manhours.find(mh => mh.date === date);
+
+          if(!mh){
+            count_no_manhour+=1;
+            return false;
+          }
+        });
+        const error_manhours=manours.filter(mh =>{
+          const date=mh.date.replace(/-/g, '/');
+          const r=records.find(r => r.date === date);
+
+          if(!r){
+            return true;
+          }
+          const { valid, actual_working_hours_no_rounding: rmin, }=r;
+
+          if(!valid){
+            // already count in error_records
+            return false;
+          }
+          const mhmin=mh.projects.map(
+            p => p.daily_hour_items
+          ).flat(1).reduce((tot,task)=>(tot + task.minute), 0);
+
+          return !(rmin === mhmin);
+        });
+
+        return ([ staff.id, staff.name,
+          records.length, error_records.length,
+          manhours.length, error_manhours.length + count_no_manhour, ]).join(',');
+      }), ]).join('\n');
+
+      util.setResult(resultid, csv, true);
+      return;
     }
   };
 
