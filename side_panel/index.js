@@ -4,7 +4,7 @@
   const onclick=(ev)=>{
     const { target, }=ev;
     const { cmd, }=target.dataset;
-    console.log(cmd, ':', ev);
+    console.log(`${cmd}:`, ev);
 
     if(cmd === 'click/fetch-result'){
       const { args: reqjson, resultid, }=target.dataset;
@@ -225,7 +225,27 @@
       return;
     }
     if(step === 'kosu'){
+      const pathname='/manhours';
+      const date=true;
+      util.request((errs, ...items)=>{
+        if(errs){
+          const { json, }=itme[0];
+          util.showResult(resultid, json, true);
+          return;
+        }
+        const manhours=items.map( ({ resp, })=>(
+          resp.manhours
+        ) ).flat(1);
+        const manhours_by_staffs={};
+        manhours.forEach(mh =>{
+          const { staff_id, dates, }=mh;
+          manhours_by_staffs[staff_id]=dates;
+        });
+        util.setResult(resultid, manhours_by_staffs);
 
+        fetchAndCheckKosu(ev, ...steps);
+      }, { pathname, date, });
+      return;
     }
     if(step === 'kosu-kakunin'){
 
