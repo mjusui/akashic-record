@@ -26,7 +26,6 @@
       }
 
       util.request((errs, ...items)=>{
-
         if(errs){
           const { json, }=items[0];
           util.showResult(resultid, json, true);
@@ -197,7 +196,7 @@
       );
       util.request((errs, ...items)=>{
         if(errs){
-          const { json, }=item[0];
+          const { json, }=items[0];
           util.showResult(resultid, json, true);
           return;
         }
@@ -231,7 +230,7 @@
       const date=true;
       util.request((errs, ...items)=>{
         if(errs){
-          const { json, }=itme[0];
+          const { json, }=items[0];
           util.showResult(resultid, json, true);
           return;
         }
