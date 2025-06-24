@@ -182,7 +182,12 @@
       const date=true;
 
       const staffs=util.getResult('textarea-staff-result2');
-      const staff_ids_group=Object.groupBy(
+      const iter=staffs.map(staff =({
+        query: { staff_ids: staff.id,
+          include_break_results: 1,
+          include_actual_working_hours_no_rounding: 1, }
+      }) );
+      /* const staff_ids_group=Object.groupBy(
         staffs.map(s => s.id), (id, idx)=> Math.floor(idx/50)
       );
       const staff_ids_list=Object.values(staff_ids_group).map(
@@ -193,7 +198,7 @@
           include_break_results: 1,
           include_actual_working_hours_no_rounding: 1, },
         })
-      );
+      ); */
       util.request((errs, ...items)=>{
         if(errs){
           const { json, }=items[0];
