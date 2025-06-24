@@ -182,7 +182,7 @@
       const date=true;
 
       const staffs=util.getResult('textarea-staff-result2');
-      const iter=staffs.map(staff =({
+      const iter=staffs.map(staff =>({
         query: { staff_ids: staff.id,
           include_break_results: 1,
           include_actual_working_hours_no_rounding: 1, }
