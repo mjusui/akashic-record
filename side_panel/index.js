@@ -6,143 +6,6 @@
     const { cmd, }=target.dataset;
     console.log(`${cmd}:`, ev);
 
-    if(cmd === 'click/fetch-result'){
-      const { args: reqjson, resultid, }=target.dataset;
-      const reqopt=JSON.parse(reqjson);
-      const { pathname, }=reqopt;
-
-      util.clearResult(resultid);
-
-      if(pathname === '/working_records'){
-        const staffs=util.getResult('textarea-staff-result');
-        const staffs_group=Object.groupBy(staffs, (staff, idx)=> Math.floor(idx/50) )
-        const staffs_list=Object.values(staffs_group);
-        const staff_ids_list=staffs_list.map(staffs => staffs.map(staff => staff.id).join(',') );
-        reqopt.iter=staff_ids_list.map(
-          staff_ids =>({ query: { staff_ids,
-            include_break_results: 1,
-            include_actual_working_hours_no_rounding: 1, }, })
-        );
-      }
-
-      util.request((errs, ...items)=>{
-        if(errs){
-          const { json, }=items[0];
-          util.showResult(resultid, json, true);
-          return;
-        }
-        if(pathname === '/staffs'){
-          const staffs=items.map( ({ resp, })=>(
-            resp.staffs.map(staff =>({
-              id: staff.staffId,
-              name: `${staff.lastName} ${staff.firstName}`,
-            }) )
-          ) ).flat(1);
-          util.setResult(resultid, staffs);
-          return;
-        }
-        if(pathname === '/working_records'){
-          const { resp: recs, }=items[0];
-          const recs_by_staffs={};
-          recs.forEach(rec =>{
-            const { staff_id, working_records, }=rec;
-
-            const expected_working_records=working_records.filter(wr =>{
-              const { working_day_category,
-                start_time, end_time, }=wr;
-
-              if(0 < working_day_category){
-                if(start_time === null && end_time === null){
-                  return false;
-                }
-              }
-              wr.valid=(start_time && end_time && true);
-              return true;
-            });
-            recs_by_staffs[staff_id]=expected_working_records;
-          });
-          //const recs_by_staffs=Object.groupBy(recs, rec => rec.staff_id);
-          util.setResult(resultid, recs_by_staffs);
-          return;
-        }
-        if(pathname === '/manhours'){
-          const manhours=items.map( ({ resp, })=>(
-            resp.manhours
-          ) ).flat(1);
-          const manhours_by_staffs={};
-          manhours.forEach(manhour =>{
-            const { staff_id, dates, }=manhour;
-            manhours_by_staffs[staff_id]=dates;
-          });
-          //const manhours_by_staffs=Object.groupBy(manhours, mh => mh.staff_id);
-          util.setResult(resultid, manhours_by_staffs);
-          return;
-        }
-      }, reqopt);
-      return;
-    }
-    if(cmd === 'click/check-kosu'){
-      const { resultid, }=target.dataset
-      const staffs=util.getResult('textarea-staff-result');
-      const records_list=util.getResult('textarea-kintai-result');
-      const manhours_list=util.getResult('textarea-kosu-result');
-
-      util.clearResult(resultid);
-
-      const csv=([ 'ID,氏名,労働日,労働日エラー,工数入力,工数入力エラー',
-        ...staffs.map(staff =>{
-        const records=records_list[staff.id] || [];
-        /* const records_holiday=records.filter(
-          r => 0 < r.working_day_category
-        ); */
-        const manhours=manhours_list[staff.id] || [];
-
-        let count_no_manhour=0;
-        const error_records=records.filter(r =>{
-          if(!r.valid){
-            count_no_manhour+=1;
-            return true;
-          }
-          const date=r.date.replace(/\//g, '-');
-          const mh=manhours.find(mh => mh.date === date);
-          if(!mh){
-            count_no_manhour+=1;
-            return false;
-          }
-          // const tasks=mh.projects.map(p => p.daily_hour_items).flat(1);
-        });
-        const error_manhours=manhours.filter(mh =>{
-          const date=mh.date.replace(/-/g, '/');
-          const r=records.find(r => r.date === date);
-          if(!r){
-            return true;
-          }
-          const { valid, actual_working_hours_no_rounding: rmin, }=r;
-          if(!valid){
-            // already count in error_records
-            return false;
-          }
-          const mhmin=mh.projects.map(
-            p => p.daily_hour_items
-          ).flat(1).reduce((tot,task)=>(tot + task.minute), 0);
-
-          const diff=Math.abs(rmin - mhmin);
-
-          return !(diff < 2);
-          /* const { start_time, end_time, }=r;
-          const start_utime=new Date(start_time).getTime();
-          const end_utime=new Date(end_time).getTime(); */
-          
-        });
-
-        return ([ staff.id, staff.name,
-          records.length, /* records_holiday.length, */ error_records.length,
-          manhours.length, error_manhours.length + count_no_manhour, ]).join(',');
-      }), ]).join('\n');
-
-      util.setResult(resultid, csv, true);
-      return;
-    }
     if(cmd === 'click/fetch-and-check-kosu'){
       const { resultid, args, }=target.dataset;
       util.clearResult(resultid);
@@ -256,34 +119,44 @@
       return;
     }
     if(step === 'kosu-kakunin'){
+      const select_endpoint=document.getElementById('select-endpoint');
+      const { value: endpoint, }=select_endpoint;
+      const baseurl=`https://${endpoint}`;
+      const input_start=document.getElementById('input-start');
+      const { value: start_date, }=input_start;
+      const urlsuffix=start_date.slice(0, 6);
+
       const staffs=util.getResult('textarea-staff-result2');
       const records_list=util.getResult('textarea-kintai-result2');
       const manhours_list=util.getResult('textarea-kosu-result2');
 
-      const csv=([ 'ID,氏名,労働日,労働日エラー,工数入力,工数入力エラー',
+      const csv=([ 'ID,氏名,労働日,労働日エラー,工数入力,工数入力エラー,出勤簿URL,工数管理URL',
         ...staffs.map(staff =>{
+        const rurl=`${baseurl}/manager/attendance/${staff.id}/${urlsuffix}`;
+        const mhurl=`${baseurl}/manager/manhours/${staff.id}/${urlsuffix}`;
         const records=records_list[staff.id] || [];
         const manhours=manhours_list[staff.id] || [];
 
-        let count_no_manhour=0;
+        const no_input_error_manhours=[];
         const error_records=records.filter(r =>{
           const { valid, }=r;
+          const date=r.date.replace(/\//g, '-');
 
           if(!valid){
-            count_no_manhour+=1;
+            no_input_error_manhours.push({ date, });
             return true; 
           }
-          const date=r.date.replace(/\//g, '-');
           const mh=manhours.find(mh => mh.date === date);
 
           if(!mh){
-            count_no_manhour+=1;
+            no_input_error_manhours.push({ date, });
             return false;
           }
         });
         const error_manhours=manhours.filter(mh =>{
-          const date=mh.date.replace(/-/g, '/');
-          const r=records.find(r => r.date === date);
+          const { date, }=mh;
+          const rdate=date.replace(/-/g, '/');
+          const r=records.find(r => r.date === rdate);
 
           if(!r){
             return true;
@@ -305,7 +178,8 @@
 
         return ([ staff.id, staff.name,
           records.length, error_records.length,
-          manhours.length, error_manhours.length + count_no_manhour, ]).join(',');
+          manhours.length, error_manhours.length + no_input_error_manhours.length,
+          rurl, mhurl,  ]).join(',');
       }), ]).join('\n');
 
       util.setResult(resultid, csv, true);
