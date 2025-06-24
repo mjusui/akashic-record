@@ -27,12 +27,13 @@
       const pathname='/staffs';
       const paging=true;
       util.request((errs, ...items)=>{
-        util.endLoading(loadingid);
         if(errs){
+          util.setLoadingError(loadingid);
           const { json, }=items[0];
           util.showResult(resultid, json, true);
           return;
         }
+        util.endLoading(loadingid);
         const staffs=items.map( ({ resp, })=>(
           resp.staffs.map(staff =>({
             id: staff.staffId,
@@ -69,12 +70,13 @@
         })
       ); */
       util.request((errs, ...items)=>{
-        util.endLoading(loadingid);
         if(errs){
+          util.setLoadingError(loadingid);
           const { json, }=items[0];
           util.showResult(resultid, json, true);
           return;
         }
+        util.endLoading(loadingid);
         const recs=items.map(i => i.resp).flat(1);
         const recs_by_staffs={};
         recs.forEach(rec =>{
@@ -105,12 +107,13 @@
       const pathname='/manhours';
       const date=true;
       util.request((errs, ...items)=>{
-        util.endLoading(loadingid);
         if(errs){
+          util.setLoadingError(loadingid);
           const { json, }=items[0];
           util.showResult(resultid, json, true);
           return;
         }
+        util.endLoading(loadingid);
         const manhours=items.map( ({ resp, })=>(
           resp.manhours
         ) ).flat(1);
@@ -366,5 +369,12 @@
       return;
     }
     el.textContent='詳細';
+  };
+  util.setLoadingError=(id)=>{
+    const el=document.getElementById(id);
+    if(!el){
+      return;
+    }
+    el.textContent='エラー発生';
   };
 })();
