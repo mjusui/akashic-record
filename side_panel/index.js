@@ -18,13 +18,16 @@
   root.addEventListener('click', onclick);
 
   const fetchAndCheckKosu=(ev, step, ...steps)=>{
+    const loadingid=`${step}=loading`;
     const resultid=`textarea-${step}-result2`;
     util.clearResult(resultid);
 
     if(step === 'staff'){
+      util.startLoading(loadingid);
       const pathname='/staffs';
       const paging=true;
       util.request((errs, ...items)=>{
+        util.endLoading(loadingid);
         if(errs){
           const { json, }=items[0];
           util.showResult(resultid, json, true);
@@ -43,6 +46,7 @@
       return;
     }
     if(step === 'kintai'){
+      util.startLoading(loadingid);
       const pathname='/working_records';
       const date=true;
 
@@ -65,6 +69,7 @@
         })
       ); */
       util.request((errs, ...items)=>{
+        util.endLoading(loadingid);
         if(errs){
           const { json, }=items[0];
           util.showResult(resultid, json, true);
@@ -96,9 +101,11 @@
       return;
     }
     if(step === 'kosu'){
+      util.startLoading(loadingid);
       const pathname='/manhours';
       const date=true;
       util.request((errs, ...items)=>{
+        util.endLoading(loadingid);
         if(errs){
           const { json, }=items[0];
           util.showResult(resultid, json, true);
@@ -345,5 +352,19 @@
   util.clearResult=(id)=>{
     const el=document.getElementById(id);
     el.value='';
+  };
+  util.startLoading=(id)=>{
+    const el=document.getElementById(id);
+    if(!el){
+      return;
+    }
+    el.textContent='データ取得中';
+  };
+  util.endLoading=(id)=>{
+    const el=document.getElementById(id);
+    if(!el){
+      return;
+    }
+    el.textContent='詳細';
   };
 })();
