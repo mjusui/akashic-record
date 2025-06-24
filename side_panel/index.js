@@ -18,7 +18,7 @@
   root.addEventListener('click', onclick);
 
   const fetchAndCheckKosu=(ev, step, ...steps)=>{
-    const loadingid=`${step}=loading`;
+    const loadingid=`${step}-loading`;
     const resultid=`textarea-${step}-result2`;
     util.clearResult(resultid);
 
