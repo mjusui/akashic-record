@@ -296,7 +296,7 @@
             p => p.daily_hour_items
           ).flat(1).reduce((tot,task)=>(tot + task.minute), 0);
 
-          return Math.abs(rmin === mhmin) < 2;
+          return Math.abs(rmin - mhmin) < 2;
         });
 
         return ([ staff.id, staff.name,
