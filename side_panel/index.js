@@ -120,8 +120,7 @@
     }
     if(step === 'kosu-kakunin'){
       const select_endpoint=document.getElementById('select-endpoint');
-      const { value: endpoint, }=select_endpoint;
-      const baseurl=`https://${endpoint}`;
+      const { value: baseurl, }=select_endpoint;
       const input_start=document.getElementById('input-start');
       const { value: start_date, }=input_start;
       const urlsuffix=start_date.slice(0, 6);
