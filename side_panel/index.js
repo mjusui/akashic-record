@@ -126,6 +126,9 @@
             p => p.daily_hour_items
           ).flat(1).reduce((tot,task)=>(tot + task.minute), 0);
 
+          const diff=Math.abs(rmin - mhmin);
+          console.log(staff.id, staff.name, rmin, mhmin, diff, diff < 2);
+
           return Math.abs(rmin - mhmin) < 2;
           /* const { start_time, end_time, }=r;
           const start_utime=new Date(start_time).getTime();
