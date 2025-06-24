@@ -126,7 +126,9 @@
             p => p.daily_hour_items
           ).flat(1).reduce((tot,task)=>(tot + task.minute), 0);
 
-          return Math.abs(rmin - mhmin) < 2;
+          const diff=Math.abs(rmin - mhmin);
+
+          return !(diff < 2);
           /* const { start_time, end_time, }=r;
           const start_utime=new Date(start_time).getTime();
           const end_utime=new Date(end_time).getTime(); */
@@ -296,7 +298,9 @@
             p => p.daily_hour_items
           ).flat(1).reduce((tot,task)=>(tot + task.minute), 0);
 
-          return Math.abs(rmin - mhmin) < 2;
+          const diff=Math.abs(rmin - mhmin);
+
+          return !(diff < 2);
         });
 
         return ([ staff.id, staff.name,
