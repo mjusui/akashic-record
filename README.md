@@ -2,6 +2,8 @@
 
 AKASHIのAPIを使って、従業員ごとの労働日、工数入力、それぞれの入力間違い(未入力含む)の数をCSVで出力するChrome拡張です。
 
+![akashic-record-demo](https://github.com/user-attachments/assets/d9a9ba0c-2f4f-4dab-9a6b-05736f5a199d)
+
 # インストール方法
 
 1. [最新(Latest)のリリース](https://github.com/mjusui/akashic-record/releases)のzipファイルをダウンロードして、適当なフォルダーに展開します
